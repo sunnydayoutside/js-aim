@@ -5,7 +5,6 @@ function decodeFLAP(packet) {
     return new Promise((resolve, reject) => {
     // this decodes FLAP packets
     var flapData = new Buffer.from(packet, 'hex');
-
     if (flapData.readUint8(0) == 0x2A) {
         switch (flapData.readUint8(1)) {
             case 0x01:
