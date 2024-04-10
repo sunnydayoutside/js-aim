@@ -32,6 +32,10 @@ function decodeTLV(packet) {
                     // client identity string
                     tlv.clientidentitystring = value.toString()
                     break;
+                case 0x0006:
+                    // authorizationkey
+                    tlv.authorizationkey = value.toString()
+                    break;
                 case 0x000f:
                     // language
                     tlv.language = value.toString()
@@ -80,7 +84,7 @@ function decodeTLV(packet) {
                     // no action
                     break;
                 default:
-                    logger.error(`unknown tlv :P | ${type.toString(16).padStart(4, 0)}`)
+                    logger.warn(`unknown tlv :P | ${type.toString(16).padStart(4, 0)}`)
                     break;
             }
         }
@@ -103,14 +107,14 @@ function constructTLV(array) {
         }
         var length = value.length
         var type = element.type
-        
+
         tlvHeader.writeUint16BE(type)
         tlvHeader.writeUint16BE(length, 2)
 
         var tlvResult = Buffer.concat([tlvHeader, value]);
         tlvBuffers.push(tlvResult)
     });
-    
+
     return new Buffer.concat(tlvBuffers)
 };
 
